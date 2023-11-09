@@ -10,8 +10,12 @@ import theme from "theme/theme";
 import { AuthProvider } from "./auth-context/auth.context";
 import { ProtectedRoute } from "./layouts/protected.route.js";
 
-let user = localStorage.getItem("user");
-user = JSON.parse(user);
+// let user = localStorage.getItem("user");
+let user = {
+  token: "tranvantai",
+  role: "management"
+}
+// user = JSON.parse(user);
 ReactDOM.render(
   <ChakraProvider theme={theme}>
     <AuthProvider userData={user}>

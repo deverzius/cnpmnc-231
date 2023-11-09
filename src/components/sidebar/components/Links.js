@@ -66,7 +66,7 @@ export function SidebarLinks(props) {
           route.layout === "/auth" ||
           route.layout === "/rtl") && (route.role == "all"
             || route.role === "management" || route.role === "employee"
-          // || route.role == user.role
+            || route.role == user.role
         )
       ) {
         return (
