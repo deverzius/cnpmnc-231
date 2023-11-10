@@ -51,7 +51,12 @@ export default function Settings() {
           columnsData={columnsDataComplex}
           tableData={tableDataComplex}
         />
+        <ComplexTable.Skeleton
+          columnsData={columnsDataComplex}
+          tableData={[]}
+        />
         <CheckTable columnsData={columnsDataCheck} tableData={tableDataCheck} />
+        <CheckTable.Skeleton columnsData={columnsDataCheck} tableData={[]} />
         {/* <DevelopmentTable
           columnsData={columnsDataDevelopment}
           tableData={tableDataDevelopment}

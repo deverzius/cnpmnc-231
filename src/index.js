@@ -16,6 +16,7 @@ let user = {
   role: "management"
 }
 // user = JSON.parse(user);
+// eslint-disable-next-line react/no-deprecated
 ReactDOM.render(
   <ChakraProvider theme={theme}>
     <AuthProvider userData={user}>

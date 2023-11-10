@@ -203,7 +203,7 @@ export default function Marketplace() {
               gap="20px"
               mb={{ base: "20px", xl: "0px" }}
             >
-              <NFT
+              <NFT.Skeleton
                 name="Swipe Circles"
                 author="By Peter Will"
                 bidders={[
@@ -281,6 +281,24 @@ export default function Marketplace() {
               name="Remain days"
               value="2 days"
             />
+            <MiniStatistics.Skeleton
+              startContent={
+                <IconBox
+                  w="56px"
+                  h="56px"
+                  bg={boxBg}
+                  icon={
+                    <Icon
+                      w="32px"
+                      h="32px"
+                      as={MdBarChart}
+                      color={brandColor}
+                    />
+                  }
+                />
+              }
+              name="Remain days"
+            />
             {/* <TableTopCreators
               tableData={tableDataTopCreators}
               columnsData={tableColumnsTopCreators}
@@ -300,6 +318,13 @@ export default function Marketplace() {
               <Button variant="action">See all</Button>
             </Flex>
 
+            <HistoryItem.Skeleton
+              name="Colorful Heaven"
+              author="By Mark Benjamin"
+              date="30s ago"
+              image={Nft5}
+              status="Approved"
+            />
             <HistoryItem
               name="Colorful Heaven"
               author="By Mark Benjamin"
