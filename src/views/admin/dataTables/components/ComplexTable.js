@@ -11,6 +11,8 @@ import {
   Tr,
   useColorModeValue,
   SkeletonText,
+  HStack,
+  VStack,
 } from "@chakra-ui/react";
 import React, { useMemo } from "react";
 import {
@@ -27,6 +29,7 @@ import Menu from "components/menu/MainMenu";
 
 // Assets
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
+import { formatDate } from "utils/date";
 export default function ComplexTable(props) {
   const { columnsData, tableData } = props;
 
@@ -42,7 +45,6 @@ export default function ComplexTable(props) {
     useSortBy,
     usePagination
   );
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -53,6 +55,7 @@ export default function ComplexTable(props) {
   } = tableInstance;
   initialState.pageSize = 5;
 
+  console.log(page)
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
   return (
@@ -100,11 +103,19 @@ export default function ComplexTable(props) {
               <Tr {...row.getRowProps()} key={index}>
                 {row.cells.map((cell, index) => {
                   let data = "";
-                  if (cell.column.Header === "NAME") {
+                  if (cell.column.Header === "TITLE") {
                     data = (
-                      <Text color={textColor} fontSize='sm' fontWeight='700'>
-                        {cell.value}
-                      </Text>
+                      <VStack>
+                        <Text color={textColor} fontSize='sm' fontWeight='700'>
+                          {cell.value[0]}
+                        </Text>
+                        <HStack>
+                          <Text fontStyle={"italic"}>By</Text>
+                          <Text color={textColor} fontSize='sm' fontWeight='700' textTransform={"uppercase"}>
+                            {cell.value[1] + " " + cell.value[2]}
+                          </Text>
+                        </HStack>
+                      </VStack>
                     );
                   } else if (cell.column.Header === "STATUS") {
                     data = (
@@ -114,33 +125,43 @@ export default function ComplexTable(props) {
                           h='24px'
                           me='5px'
                           color={
-                            cell.value === "Approved"
+                            cell.value === "approved"
                               ? "green.500"
                               : cell.value === "Disable"
                                 ? "red.500"
-                                : cell.value === "Error"
+                                : cell.value === "pendding"
                                   ? "orange.500"
                                   : null
                           }
                           as={
-                            cell.value === "Approved"
+                            cell.value === "approved"
                               ? MdCheckCircle
                               : cell.value === "Disable"
                                 ? MdCancel
-                                : cell.value === "Error"
+                                : cell.value === "pedding"
                                   ? MdOutlineError
                                   : null
                           }
                         />
-                        <Text color={textColor} fontSize='sm' fontWeight='700'>
+                        <Text
+                          color={
+                            cell.value === "approved"
+                              ? "green.500"
+                              : cell.value === "Disable"
+                                ? "red.500"
+                                : cell.value === "pendding"
+                                  ? "orange.500"
+                                  : null
+                          } fontSize='sm' fontWeight='700' textTransform={"capitalize"}>
                           {cell.value}
                         </Text>
                       </Flex>
                     );
                   } else if (cell.column.Header === "DATE") {
+                    console.log(cell.value)
                     data = (
                       <Text color={textColor} fontSize='sm' fontWeight='700'>
-                        {cell.value}
+                        {formatDate(cell.value)}
                       </Text>
                     );
                   } else if (cell.column.Header === "REMAIN DAYS") {
@@ -151,7 +172,7 @@ export default function ComplexTable(props) {
                           colorScheme='brandScheme'
                           h='8px'
                           w='108px'
-                          value={cell.value}
+                          value={cell.value / 30 * 100}
                         />
                       </Flex>
                     );

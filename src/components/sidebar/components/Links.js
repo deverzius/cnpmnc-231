@@ -62,11 +62,12 @@ export function SidebarLinks(props) {
           </>
         );
       } else if (
-        (route.layout === "/admin" ||
-          route.layout === "/auth" ||
-          route.layout === "/rtl") && (route.role == "all"
-            || route.role === "management" || route.role === "employee"
-            || route.role == user.role
+        // (route.layout === "/admin" ||
+        //   route.layout === "/auth" ||
+        //   route.layout === "/rtl") && 
+        (route.role == "all"
+          // || route.role === "management" || route.role === "employee"
+          || route.role == user?.role
         )
       ) {
         return (

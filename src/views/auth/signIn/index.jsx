@@ -74,9 +74,11 @@ function SignIn() {
     { bg: "secondaryGray.300" },
     { bg: "whiteAlpha.200" }
   );
+
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const login = async (event) => {
+    console.log(email, password);
     if (event) {
       event.preventDefault();
     }
@@ -95,11 +97,12 @@ function SignIn() {
         email,
         password,
       });
+      console.log(response);
       if (response.data && response.data.success === false) {
         setButtonText("Sign in");
         return setError(response.data.msg);
       }
-      return setProfile("response");
+      return setProfile(response);
     } catch (err) {
       console.log(err);
       setButtonText("Sign in");
@@ -112,6 +115,7 @@ function SignIn() {
   const setProfile = async (response) => {
     let user = { ...response.data.user };
     user.token = response.data.token;
+    user.role = response.data.role || "Employee";
     user = JSON.stringify(user);
     setUser(user);
     localStorage.setItem("user", user);

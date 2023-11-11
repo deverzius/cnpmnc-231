@@ -20,7 +20,7 @@
 
 */
 
-import React from "react";
+import React, { useMemo } from "react";
 
 // Chakra imports
 import {
@@ -67,6 +67,9 @@ import Avatar3 from "assets/img/avatars/avatar3.png";
 import Avatar4 from "assets/img/avatars/avatar4.png";
 import tableDataTopCreators from "views/admin/marketplace/variables/tableDataTopCreators.json";
 import { tableColumnsTopCreators } from "views/admin/marketplace/variables/tableColumnsTopCreators";
+import { useQuery } from "@tanstack/react-query";
+import EmployeeApi from "api/employee";
+import { formatDate } from "utils/date";
 
 export default function Marketplace() {
   // Chakra Color Mode
@@ -75,6 +78,38 @@ export default function Marketplace() {
 
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   const brandColor = useColorModeValue("brand.500", "white");
+  //
+  const {
+    data: RequestListData,
+    refetch: refetchAllData,
+    isFetching: isFetchingListData,
+  } = useQuery({
+    queryKey: ["todos"],
+    queryFn: () => EmployeeApi.ListRequest(),
+    enabled: true,
+  });
+  const tableDataComplex = useMemo(() => {
+    const pendingList = RequestListData?.data?.data?.pendding || [];
+    const approvedList = RequestListData?.data?.data?.approved || [];
+    const rejectedList = RequestListData?.data?.data?.rejected || [];
+
+    const mergedList = [...pendingList, ...approvedList, ...rejectedList]
+      .sort((a, b) => b.updatedAt - a.updatedAt)
+      .map((item) => ({
+        title: [
+          item.title,
+          item.user.lastname,
+          item.user.firstname,
+          item.user.email,
+        ],
+        date: item.updatedAt,
+        status: item.status,
+        remain: item.user.remaindingLeaveDays,
+      }));
+
+    return mergedList;
+  }, [RequestListData]);
+  console.log(tableDataComplex);
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
       {/* Main Fields */}
@@ -203,24 +238,50 @@ export default function Marketplace() {
               gap="20px"
               mb={{ base: "20px", xl: "0px" }}
             >
-              <NFT.Skeleton
-                name="Swipe Circles"
-                author="By Peter Will"
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft4}
-                date="24.Jan.2021"
-                download="#"
-              />
-              <NFT
+              {isFetchingListData ? (
+                <NFT.Skeleton
+                  name="Swipe Circles"
+                  author="By Peter Will"
+                  bidders={[
+                    Avatar1,
+                    Avatar2,
+                    Avatar3,
+                    Avatar4,
+                    Avatar1,
+                    Avatar1,
+                    Avatar1,
+                    Avatar1,
+                  ]}
+                  image={Nft4}
+                  date="24.Jan.2021"
+                  download="#"
+                />
+              ) : (
+                tableDataComplex
+                  // .slice(0, 5)
+                  .map((item) => (
+                    <NFT
+                      key={item.title}
+                      name={item.title[0]}
+                      author={`By ${item.title[1] + " " + item.title[2]}`}
+                      bidders={[
+                        Avatar1,
+                        Avatar2,
+                        Avatar3,
+                        Avatar4,
+                        Avatar1,
+                        Avatar1,
+                        Avatar1,
+                        Avatar1,
+                      ]}
+                      image={Nft5}
+                      date={formatDate(item.date)}
+                      download="#"
+                      status={item.status}
+                    />
+                  ))
+              )}
+              {/* <NFT
                 name="Colorful Heaven"
                 author="By Mark Benjamin"
                 bidders={[
@@ -253,7 +314,7 @@ export default function Marketplace() {
                 image={Nft6}
                 date="24.Jan.2021"
                 download="#"
-              />
+              /> */}
             </SimpleGrid>
           </Flex>
         </Flex>
@@ -317,21 +378,31 @@ export default function Marketplace() {
               </Text>
               <Button variant="action">See all</Button>
             </Flex>
-
-            <HistoryItem.Skeleton
-              name="Colorful Heaven"
-              author="By Mark Benjamin"
-              date="30s ago"
-              image={Nft5}
-              status="Approved"
-            />
-            <HistoryItem
-              name="Colorful Heaven"
-              author="By Mark Benjamin"
-              date="30s ago"
-              image={Nft5}
-              status="Approved"
-            />
+            {isFetchingListData ? (
+              <HistoryItem.Skeleton
+                name="Colorful Heaven"
+                author="By Mark Benjamin"
+                date="30s ago"
+                image={Nft5}
+                status="Approved"
+              />
+            ) : (
+              tableDataComplex.map((item) => {
+                if (item.status === "approved") {
+                  // eslint-disable-next-line react/jsx-key
+                  return (
+                    <HistoryItem
+                      key={item.title[1]}
+                      name={item.title[0]}
+                      author={`By ${item.title[0]}`}
+                      date="30s ago"
+                      image={Nft5}
+                      status="Approved"
+                    />
+                  );
+                }
+              })
+            )}
           </Card>
         </Flex>
       </Grid>

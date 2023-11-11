@@ -18,6 +18,8 @@ import {
   Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import EmployeeApi from "api/employee";
 import MiniCalendar from "components/calendar/MiniCalendar";
 import React from "react";
 import { formatDate } from "utils/date";
@@ -27,9 +29,29 @@ const RequestModal = () => {
   const initialRef = React.useRef();
   const finalRef = React.useRef();
   const [selectedDate, onChange] = React.useState(new Date());
+  const [title, setTitle] = React.useState()
+  const [reason, setReason] = React.useState()
   const handleChangeEvent = (e) => {
     onChange(e);
     console.log(e);
+  };
+  console.log(title, reason)
+  ///
+  const {
+    data: RequestListData,
+    refetch: ApproveRequest,
+    isFetching: isFetchingListData,
+    isSuccess,
+    isLoading
+  } = useQuery({
+    queryKey: ["approve"],
+    queryFn: () => EmployeeApi.SubmitRequest({ title: title, reason: reason, start_date: selectedDate[0], end_date: selectedDate[1] }),
+    enabled: false,
+  });
+  const handleClick = async () => {
+    // Enable the query when the button is clicked
+    await ApproveRequest();
+    onClose()
   };
   return (
     <>
@@ -63,7 +85,7 @@ const RequestModal = () => {
           <ModalBody pb={6}>
             <FormControl isRequired>
               <FormLabel>Brief Description</FormLabel>
-              <Input ref={initialRef} placeholder="Title" />
+              <Input ref={initialRef} placeholder="Title" onChange={(e => setTitle(e.target.value))} />
             </FormControl>
             <Center height="50px">
               <Divider orientation="horizontal" />
@@ -72,7 +94,7 @@ const RequestModal = () => {
               <FormLabel>
                 Reason (summarizing the reason why you want to take a leave.)
               </FormLabel>
-              <Textarea ref={initialRef} placeholder="Reason" />
+              <Textarea ref={initialRef} placeholder="Reason" onChange={(e => setReason(e.target.value))} />
             </FormControl>
             <Center height="50px">
               <Divider orientation="horizontal" />
@@ -132,7 +154,7 @@ const RequestModal = () => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="brand" mr={3}>
+            <Button colorScheme="brand" mr={3} onClick={handleClick} isDisabled={isFetchingListData}>
               Submit
             </Button>
             <Button onClick={onClose}>Cancel</Button>

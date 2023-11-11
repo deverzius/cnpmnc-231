@@ -19,8 +19,8 @@ export const columnsDataDevelopment = [
 
 export const columnsDataCheck = [
   {
-    Header: "NAME",
-    accessor: "name",
+    Header: "TITLE",
+    accessor: "title",
   },
   {
     Header: "REMAIN DAYS",
@@ -57,8 +57,8 @@ export const columnsDataColumns = [
 
 export const columnsDataComplex = [
   {
-    Header: "NAME",
-    accessor: "name",
+    Header: "TITLE",
+    accessor: "title",
   },
   {
     Header: "STATUS",

@@ -20,21 +20,25 @@ import React, { useState } from "react";
 import { IoHeart, IoHeartOutline } from "react-icons/io5";
 
 export default function NFT(props) {
-  const { image, name, author, bidders, download, date } = props;
+  const { image, name, author, bidders, download, date, status } = props;
 
   const textColor = useColorModeValue("navy.700", "white");
   const textColorBid = useColorModeValue("brand.500", "white");
   const textColorDate = useColorModeValue("gray.800", "white");
   return (
     <Card p="20px">
-      <Flex direction={{ base: "column" }} justify="center">
+      <Flex direction={{ base: "column" }} justify="center" >
         <Box mb={{ base: "20px", "2xl": "20px" }} position="relative">
-          <Image
-            src={image}
+          {/* <Flex
+            // src={image}
+            bg={`
+            linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%)
+            `}
+            shadow={"rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;"}
             w={{ base: "100%", "3xl": "100%" }}
-            h={{ base: "100%", "3xl": "100%" }}
+            h={{ base: "100%", "3xl": "200px" }}
             borderRadius="20px"
-          />
+          ></Flex> */}
           {/* <Button
             position='absolute'
             bg='white'
@@ -148,8 +152,9 @@ export default function NFT(props) {
                 borderRadius="70px"
                 px="24px"
                 py="5px"
+                textTransform={"capitalize"}
               >
-                Pending
+                {status}
               </Button>
             </Link>
           </Flex>

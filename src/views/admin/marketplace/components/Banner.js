@@ -12,7 +12,11 @@ export default function Banner() {
   return (
     <Flex
       direction='column'
-      bgImage={banner}
+      // bgImage={banner}
+      bg={`
+      linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+`}
+      shadow={"rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;"}
       bgSize='cover'
       py={{ base: "30px", md: "56px" }}
       px={{ base: "30px", md: "64px" }}
@@ -50,7 +54,7 @@ export default function Banner() {
         Press the button below to submit a leave request. You are allowed to take only 5 days off per month. Your request will be sent to the manager for approval. Please await confirmation.
       </Text>
       <Flex align='center'>
-        <RequestModal/>
+        <RequestModal />
         <Link>
           <Text color='white' fontSize='sm' fontWeight='500'>
             See policy

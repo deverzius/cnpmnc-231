@@ -37,7 +37,7 @@ const routes = [
     name: "Send Request",
     layout: "/admin",
     path: "/send-request",
-    role: "employee",
+    role: "Employee",
     icon: (
       <Icon
         as={MdOutlineShoppingCart}
@@ -52,18 +52,19 @@ const routes = [
   {
     name: "Approve Request",
     layout: "/admin",
-    role: "management",
+    role: "Admin",
     icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
     path: "/approve-request",
     component: DataTables,
   },
-  {
-    name: "Profile",
-    layout: "/admin",
-    path: "/profile",
-    icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
-    component: Profile,
-  },
+  // {
+  //   name: "Profile",
+  //   layout: "/admin",
+  //   role: "all",
+  //   path: "/profile",
+  //   icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
+  //   component: Profile,
+  // },
   {
     name: "Signin",
     layout: "/auth",

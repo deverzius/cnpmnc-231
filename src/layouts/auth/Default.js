@@ -70,6 +70,7 @@ function AuthIllustration(props) {
             bg={`
                   linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             `}
+            shadow={"rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;"}
             justify="center"
             align="center"
             w="100%"
@@ -79,7 +80,6 @@ function AuthIllustration(props) {
             bgPosition="50%"
             position="absolute"
             borderBottomLeftRadius={{ lg: "120px", xl: "200px" }}
-            shadow={"rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;"}
           >
             {/* <Text
               color={textColorDetails}

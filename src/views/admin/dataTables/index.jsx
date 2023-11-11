@@ -36,10 +36,75 @@ import tableDataDevelopment from "views/admin/dataTables/variables/tableDataDeve
 import tableDataCheck from "views/admin/dataTables/variables/tableDataCheck.json";
 import tableDataColumns from "views/admin/dataTables/variables/tableDataColumns.json";
 import tableDataComplex from "views/admin/dataTables/variables/tableDataComplex.json";
-import React from "react";
+import React, { useMemo } from "react";
+import ManageApi from "api/management";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Settings() {
   // Chakra Color Mode
+  const {
+    data: RequestListData,
+    refetch: refetchAllData,
+    isFetching: isFetchingListData,
+  } = useQuery({
+    queryKey: ["todos"],
+    queryFn: () => ManageApi.ListRequest(),
+    enabled: true,
+  });
+  console.log(ManageApi.ListRequest);
+  const {
+    data: UpcomingRequests,
+    refetch,
+    isFetching: isFetchUpcomingRequests,
+  } = useQuery({
+    queryKey: ["todos"],
+    queryFn: () => ManageApi.ListRequest(),
+    enabled: true,
+  });
+
+  const tableDataComplex = useMemo(() => {
+    const pendingList = RequestListData?.data?.data?.pendding || [];
+    const approvedList = RequestListData?.data?.data?.approved || [];
+    const rejectedList = RequestListData?.data?.data?.rejected || [];
+
+    const mergedList = [...pendingList, ...approvedList, ...rejectedList]
+      .sort((a, b) => a.updatedAt - b.updatedAt)
+      .map((item) => ({
+        title: [
+          item.title,
+          item.user.lastname,
+          item.user.firstname,
+          item.user.email,
+        ],
+        date: item.updatedAt,
+        status: item.status,
+        remain: item.user.remaindingLeaveDays,
+      }));
+
+    return mergedList;
+  }, [RequestListData]);
+
+  const tableDataCheck = useMemo(() => {
+    const pendingList = RequestListData?.data?.data?.pendding || [];
+
+    const mergedList = [...pendingList]
+      .sort((a, b) => a.updatedAt - b.updatedAt)
+      .map((item) => ({
+        title: [
+          item.title,
+          item.user.lastname,
+          item.user.firstname,
+          item.user.email,
+          item.id,
+        ],
+        date: item.updatedAt,
+        reason: item.reason,
+        remain: item.user.remaindingLeaveDays,
+      }));
+
+    return mergedList;
+  }, [RequestListData]);
+
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <SimpleGrid
@@ -47,17 +112,28 @@ export default function Settings() {
         columns={{ sm: 1, md: 2 }}
         spacing={{ base: "20px", xl: "20px" }}
       >
-        <ComplexTable
-          columnsData={columnsDataComplex}
-          tableData={tableDataComplex}
-        />
-        <ComplexTable.Skeleton
-          columnsData={columnsDataComplex}
-          tableData={[]}
-        />
-        <CheckTable columnsData={columnsDataCheck} tableData={tableDataCheck} />
-        <CheckTable.Skeleton columnsData={columnsDataCheck} tableData={[]} />
-        {/* <DevelopmentTable
+        {isFetchingListData ? (
+          <ComplexTable.Skeleton
+            columnsData={columnsDataComplex}
+            tableData={[]}
+          />
+        ) : (
+          <ComplexTable
+            columnsData={columnsDataComplex}
+            tableData={tableDataComplex}
+            refetchAllData={refetchAllData}
+          />
+        )}
+        {isFetchingListData ? (
+          <CheckTable.Skeleton columnsData={columnsDataCheck} tableData={[]} />
+        ) : (
+          <CheckTable
+            columnsData={columnsDataCheck}
+            tableData={tableDataCheck}
+            refetchAllData={refetchAllData}
+          />
+        )}
+        {/* <DevelopmentTable}
           columnsData={columnsDataDevelopment}
           tableData={tableDataDevelopment}
         />

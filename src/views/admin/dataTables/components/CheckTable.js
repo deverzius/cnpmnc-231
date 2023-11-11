@@ -11,9 +11,11 @@ import {
   useColorModeValue,
   Stack,
   Button,
-  SkeletonText
+  SkeletonText,
+  VStack,
+  HStack
 } from "@chakra-ui/react";
-import React, { useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { MdCheckCircle as ApproveIcon, MdCancel as RejectIcon } from "react-icons/md"
 import {
   useGlobalFilter,
@@ -26,11 +28,51 @@ import MOCKDATA from "views/admin/dataTables/variables/tableDataCheck.json";
 // Custom components
 import Card from "components/card/Card";
 import Menu from "components/menu/MainMenu";
+import { formatDate } from "utils/date";
+import { useQuery } from "@tanstack/react-query";
+import ManageApi from "api/management";
 export default function CheckTable(props) {
-  const { columnsData, tableData } = props;
+  const [isQueryEnabled, setIsQueryEnabled] = useState(false);
+  const [select, setSelect] = useState([])
+  const { columnsData, tableData, refetchAllData } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
+
+  const {
+    data: RequestListData,
+    refetch: ApproveRequest,
+    isFetching: isFetchingListData,
+    isSuccess,
+    isLoading
+  } = useQuery({
+    queryKey: ["approve"],
+    queryFn: () => ManageApi.ApproveRequest({ leaveReqIds: select }),
+    enabled: false,
+  });
+  const handleClick = async () => {
+    // Enable the query when the button is clicked
+    await ApproveRequest();
+    refetchAllData()
+  };
+
+  // if (isSuccess) { refetchAllData() }
+
+  const addUniqueElement = useCallback((element) => {
+    setSelect(prevSelect => {
+      const index = prevSelect.indexOf(element);
+
+      if (index !== -1) {
+        // Nếu phần tử đã tồn tại, loại bỏ nó khỏi mảng
+        const updatedSelect = [...prevSelect];
+        updatedSelect.splice(index, 1);
+        return updatedSelect;
+      }
+
+      // Thêm phần tử vào mảng
+      return [...prevSelect, element];
+    });
+  })
 
   const tableInstance = useTable(
     {
@@ -99,18 +141,28 @@ export default function CheckTable(props) {
               <Tr {...row.getRowProps()} key={index}>
                 {row.cells.map((cell, index) => {
                   let data = "";
-                  if (cell.column.Header === "NAME") {
+                  if (cell.column.Header === "TITLE") {
                     data = (
                       <Flex align='center'>
                         <Checkbox
-                          defaultChecked={cell.value[1]}
+                          defaultChecked={false}
                           colorScheme='brandScheme'
                           me='10px'
-                          onChange={() => { console.log(cell) }}
+                          onChange={() => { addUniqueElement(cell.value[4]) }}
                         />
-                        <Text color={textColor} fontSize='sm' fontWeight='700'>
-                          {cell.value[0]}
-                        </Text>
+                        <VStack>
+                          <Text color={textColor} fontSize='sm' fontWeight='700'>
+                            {cell.value[0]}
+                          </Text>
+                          <HStack>
+                            <Text fontStyle={"italic"}>By</Text>
+                            <Text color={textColor} fontSize='sm' fontWeight='700' textTransform={"uppercase"}>
+                              {cell.value[1] + " " + cell.value[2]}
+                            </Text>
+
+                          </HStack>
+
+                        </VStack>
                       </Flex>
                     );
                   } else if (cell.column.Header === "REMAIN DAYS") {
@@ -134,7 +186,7 @@ export default function CheckTable(props) {
                   } else if (cell.column.Header === "DATE") {
                     data = (
                       <Text color={textColor} fontSize='sm' fontWeight='700'>
-                        {cell.value}
+                        {formatDate(cell.value)}
                       </Text>
                     );
                   }
@@ -155,7 +207,7 @@ export default function CheckTable(props) {
         </Tbody>
       </Table>
       <Stack direction="row" spacing={4} ml="3" mt="3">
-        <Button leftIcon={<ApproveIcon />} variant="brand" loadingText="Approving">
+        <Button leftIcon={<ApproveIcon />} variant="brand" loadingText="Approving" onClick={handleClick} disabled={isFetchingListData}>
           Approve
         </Button>
         <Button rightIcon={<RejectIcon />} variant="outline" colorScheme="red" loadingText="Rejecting">
