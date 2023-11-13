@@ -15,7 +15,7 @@ import Card from "components/card/Card.js";
 import React from "react";
 
 export default function Default(props) {
-  const { startContent, endContent, name, growth, value } = props;
+  const { startContent, endContent, name, growth, value, onClick } = props;
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const textColorSecondary = "secondaryGray.600";
 
@@ -25,7 +25,8 @@ export default function Default(props) {
         my='auto'
         h='100%'
         align={{ base: "center", xl: "start" }}
-        justify={{ base: "center", xl: "center" }}>
+        justify={{ base: "center", xl: "center" }}
+        onClick={onClick}>
         {startContent}
 
         <Stat my='auto' ms={startContent ? "18px" : "0px"}>

@@ -115,7 +115,8 @@ function SignIn() {
   const setProfile = async (response) => {
     let user = { ...response.data.user };
     user.token = response.data.token;
-    user.role = response.data.role || "Employee";
+    user.role = response.data.user.role || "Employee";
+    user.remain = response.data.user.remaindingLeaveDays;
     user = JSON.stringify(user);
     setUser(user);
     localStorage.setItem("user", user);
@@ -260,7 +261,7 @@ function SignIn() {
                     Keep me logged in
                   </FormLabel>
                 </FormControl>
-                <NavLink to="/auth/forgot-password">
+                {/* <NavLink to="/auth/forgot-password">
                   <Text
                     color={textColorBrand}
                     fontSize="sm"
@@ -269,7 +270,7 @@ function SignIn() {
                   >
                     Forgot password?
                   </Text>
-                </NavLink>
+                </NavLink> */}
               </Flex>
               <Button
                 fontSize="sm"
@@ -290,7 +291,7 @@ function SignIn() {
               maxW="100%"
               mt="0px"
             >
-              <Text color={textColorDetails} fontWeight="400" fontSize="14px">
+              {/* <Text color={textColorDetails} fontWeight="400" fontSize="14px">
                 Not registered yet?
                 <NavLink to="/auth/sign-up">
                   <Text
@@ -302,7 +303,7 @@ function SignIn() {
                     Create an Account
                   </Text>
                 </NavLink>
-              </Text>
+              </Text> */}
             </Flex>
           </Flex>
         </Flex>

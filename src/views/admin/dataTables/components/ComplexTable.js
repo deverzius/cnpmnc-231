@@ -127,18 +127,18 @@ export default function ComplexTable(props) {
                           color={
                             cell.value === "approved"
                               ? "green.500"
-                              : cell.value === "Disable"
+                              : cell.value === "rejected"
                                 ? "red.500"
-                                : cell.value === "pendding"
+                                : cell.value === "pending"
                                   ? "orange.500"
                                   : null
                           }
                           as={
                             cell.value === "approved"
                               ? MdCheckCircle
-                              : cell.value === "Disable"
+                              : cell.value === "rejected"
                                 ? MdCancel
-                                : cell.value === "pedding"
+                                : cell.value === "pending"
                                   ? MdOutlineError
                                   : null
                           }
@@ -147,7 +147,7 @@ export default function ComplexTable(props) {
                           color={
                             cell.value === "approved"
                               ? "green.500"
-                              : cell.value === "Disable"
+                              : cell.value === "rejected"
                                 ? "red.500"
                                 : cell.value === "pendding"
                                   ? "orange.500"

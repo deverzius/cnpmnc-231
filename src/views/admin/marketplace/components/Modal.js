@@ -24,7 +24,7 @@ import MiniCalendar from "components/calendar/MiniCalendar";
 import React from "react";
 import { formatDate } from "utils/date";
 
-const RequestModal = () => {
+const RequestModal = ({ refetch }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef();
   const finalRef = React.useRef();
@@ -51,6 +51,7 @@ const RequestModal = () => {
   const handleClick = async () => {
     // Enable the query when the button is clicked
     await ApproveRequest();
+    refetch()
     onClose()
   };
   return (
@@ -94,7 +95,7 @@ const RequestModal = () => {
               <FormLabel>
                 Reason (summarizing the reason why you want to take a leave.)
               </FormLabel>
-              <Textarea ref={initialRef} placeholder="Reason" onChange={(e => setReason(e.target.value))} />
+              <Textarea placeholder="Reason" onChange={(e => setReason(e.target.value))} />
             </FormControl>
             <Center height="50px">
               <Divider orientation="horizontal" />

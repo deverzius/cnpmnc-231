@@ -70,8 +70,22 @@ import { tableColumnsTopCreators } from "views/admin/marketplace/variables/table
 import { useQuery } from "@tanstack/react-query";
 import EmployeeApi from "api/employee";
 import { formatDate } from "utils/date";
+import UserApi from "api/user";
 
 export default function Marketplace() {
+  let user = localStorage.getItem("user");
+  let id = JSON.parse(user).id;
+
+  const {
+    data: userData,
+    refetch: refetchUser,
+    isFetching: isFetchingUser,
+  } = useQuery({
+    queryKey: ["info"],
+    queryFn: () => UserApi.getInfo(id),
+    enabled: true,
+  });
+  console.log(userData, "userData");
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const textColorBrand = useColorModeValue("brand.500", "white");
@@ -88,13 +102,14 @@ export default function Marketplace() {
     queryFn: () => EmployeeApi.ListRequest(),
     enabled: true,
   });
+  console.log(RequestListData, "tran van tai");
   const tableDataComplex = useMemo(() => {
-    const pendingList = RequestListData?.data?.data?.pendding || [];
+    const pendingList = RequestListData?.data?.data?.pending || [];
     const approvedList = RequestListData?.data?.data?.approved || [];
     const rejectedList = RequestListData?.data?.data?.rejected || [];
 
     const mergedList = [...pendingList, ...approvedList, ...rejectedList]
-      .sort((a, b) => b.updatedAt - a.updatedAt)
+      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
       .map((item) => ({
         title: [
           item.title,
@@ -109,7 +124,8 @@ export default function Marketplace() {
 
     return mergedList;
   }, [RequestListData]);
-  console.log(tableDataComplex);
+
+  // console.log(tableDataComplex);
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
       {/* Main Fields */}
@@ -123,7 +139,7 @@ export default function Marketplace() {
           flexDirection="column"
           gridArea={{ xl: "1 / 1 / 2 / 3", "2xl": "1 / 1 / 2 / 2" }}
         >
-          <Banner />
+          <Banner refetch={refetchAllData} />
           <Flex direction="column">
             {/* <Flex
               mt="45px"
@@ -323,43 +339,47 @@ export default function Marketplace() {
           gridArea={{ xl: "1 / 3 / 2 / 4", "2xl": "1 / 2 / 2 / 3" }}
         >
           <Card px="0px" mb="20px">
-            <MiniStatistics
-              startContent={
-                <IconBox
-                  w="56px"
-                  h="56px"
-                  bg={boxBg}
-                  icon={
-                    <Icon
-                      w="32px"
-                      h="32px"
-                      as={MdBarChart}
-                      color={brandColor}
-                    />
-                  }
-                />
-              }
-              name="Remain days"
-              value="2 days"
-            />
-            <MiniStatistics.Skeleton
-              startContent={
-                <IconBox
-                  w="56px"
-                  h="56px"
-                  bg={boxBg}
-                  icon={
-                    <Icon
-                      w="32px"
-                      h="32px"
-                      as={MdBarChart}
-                      color={brandColor}
-                    />
-                  }
-                />
-              }
-              name="Remain days"
-            />
+            {!isFetchingUser ? (
+              <MiniStatistics
+                onClick={refetchUser}
+                startContent={
+                  <IconBox
+                    w="56px"
+                    h="56px"
+                    bg={boxBg}
+                    icon={
+                      <Icon
+                        w="32px"
+                        h="32px"
+                        as={MdBarChart}
+                        color={brandColor}
+                      />
+                    }
+                  />
+                }
+                name="Remain days"
+                value={`${userData?.data?.user?.remaindingLeaveDays} days`}
+              />
+            ) : (
+              <MiniStatistics.Skeleton
+                startContent={
+                  <IconBox
+                    w="56px"
+                    h="56px"
+                    bg={boxBg}
+                    icon={
+                      <Icon
+                        w="32px"
+                        h="32px"
+                        as={MdBarChart}
+                        color={brandColor}
+                      />
+                    }
+                  />
+                }
+                name="Remain days"
+              />
+            )}
             {/* <TableTopCreators
               tableData={tableDataTopCreators}
               columnsData={tableColumnsTopCreators}

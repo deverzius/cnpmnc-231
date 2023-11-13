@@ -177,11 +177,11 @@ export default function HeaderLinks(props) {
               fontSize='sm'
               fontWeight='700'
               color={textColor}>
-              👋&nbsp; Hey, Adela
+              👋&nbsp; Welcome, you
             </Text>
           </Flex>
           <Flex flexDirection='column' p='10px'>
-            <MenuItem
+            {/* <MenuItem
               _hover={{ bg: "none" }}
               _focus={{ bg: "none" }}
               borderRadius='8px'
@@ -194,7 +194,7 @@ export default function HeaderLinks(props) {
               borderRadius='8px'
               px='14px'>
               <Text fontSize='sm'>Newsletter Settings</Text>
-            </MenuItem>
+  </MenuItem>*/}
             <MenuItem
               _hover={{ bg: "none" }}
               _focus={{ bg: "none" }}

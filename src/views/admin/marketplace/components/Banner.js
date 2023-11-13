@@ -7,7 +7,7 @@ import { Button, Flex, Link, Text } from "@chakra-ui/react";
 import banner from "assets/img/nfts/NftBanner1.png";
 import RequestModal from "./Modal";
 
-export default function Banner() {
+export default function Banner({ refetch }) {
   // Chakra Color Mode
   return (
     <Flex
@@ -54,7 +54,7 @@ export default function Banner() {
         Press the button below to submit a leave request. You are allowed to take only 5 days off per month. Your request will be sent to the manager for approval. Please await confirmation.
       </Text>
       <Flex align='center'>
-        <RequestModal />
+        <RequestModal refetch={refetch} />
         <Link>
           <Text color='white' fontSize='sm' fontWeight='500'>
             See policy

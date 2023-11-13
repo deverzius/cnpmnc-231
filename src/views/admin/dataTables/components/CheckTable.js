@@ -55,6 +55,22 @@ export default function CheckTable(props) {
     await ApproveRequest();
     refetchAllData()
   };
+  const {
+    // data: RequestListData,
+    refetch: RejectRequest,
+    isFetching: isFetchingReject,
+    // isSuccess,
+    // isLoading
+  } = useQuery({
+    queryKey: ["reject"],
+    queryFn: () => ManageApi.RejectRequest({ leaveReqIds: select }),
+    enabled: false,
+  });
+  const handleClickReject = async () => {
+    // Enable the query when the button is clicked
+    await RejectRequest();
+    refetchAllData()
+  };
 
   // if (isSuccess) { refetchAllData() }
 
@@ -210,7 +226,7 @@ export default function CheckTable(props) {
         <Button leftIcon={<ApproveIcon />} variant="brand" loadingText="Approving" onClick={handleClick} disabled={isFetchingListData}>
           Approve
         </Button>
-        <Button rightIcon={<RejectIcon />} variant="outline" colorScheme="red" loadingText="Rejecting">
+        <Button rightIcon={<RejectIcon />} variant="outline" colorScheme="red" loadingText="Rejecting" onClick={handleClickReject} disabled={isFetchingReject}>
           Reject
         </Button>
       </Stack>

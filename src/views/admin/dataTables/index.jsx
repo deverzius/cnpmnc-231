@@ -63,12 +63,12 @@ export default function Settings() {
   });
 
   const tableDataComplex = useMemo(() => {
-    const pendingList = RequestListData?.data?.data?.pendding || [];
+    const pendingList = RequestListData?.data?.data?.pending || [];
     const approvedList = RequestListData?.data?.data?.approved || [];
     const rejectedList = RequestListData?.data?.data?.rejected || [];
 
     const mergedList = [...pendingList, ...approvedList, ...rejectedList]
-      .sort((a, b) => a.updatedAt - b.updatedAt)
+      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
       .map((item) => ({
         title: [
           item.title,
@@ -85,10 +85,10 @@ export default function Settings() {
   }, [RequestListData]);
 
   const tableDataCheck = useMemo(() => {
-    const pendingList = RequestListData?.data?.data?.pendding || [];
+    const pendingList = RequestListData?.data?.data?.pending || [];
 
     const mergedList = [...pendingList]
-      .sort((a, b) => a.updatedAt - b.updatedAt)
+      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
       .map((item) => ({
         title: [
           item.title,
@@ -120,7 +120,7 @@ export default function Settings() {
         ) : (
           <ComplexTable
             columnsData={columnsDataComplex}
-            tableData={tableDataComplex}
+            tableData={tableDataComplex.slice(0, 5)}
             refetchAllData={refetchAllData}
           />
         )}
