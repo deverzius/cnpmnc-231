@@ -20,7 +20,7 @@ import React, { useState } from "react";
 import { IoHeart, IoHeartOutline } from "react-icons/io5";
 
 export default function NFT(props) {
-  const { image, name, author, bidders, download, date, status } = props;
+  const { image, name, author, bidders, download, date, status, reason, leaveDays, admin } = props;
 
   const textColor = useColorModeValue("navy.700", "white");
   const textColorBid = useColorModeValue("brand.500", "white");
@@ -99,7 +99,7 @@ export default function NFT(props) {
                 }}
                 fontWeight='400'
                 me='14px'>
-                {author}
+                {reason}
               </Text>
             </Flex>
             {/* <AvatarGroup
@@ -119,6 +119,7 @@ export default function NFT(props) {
               ))}
             </AvatarGroup> */}
           </Flex>
+
           <Flex
             align="start"
             justify="space-between"
@@ -132,8 +133,30 @@ export default function NFT(props) {
             mt="25px"
           >
             <Text fontWeight="700" fontSize="sm" color={textColorBid}>
-              Updated Day: <Text color={textColorDate}>{date}</Text>
+              {`${leaveDays[0]}`}
             </Text>
+            <Text fontWeight="700" fontSize="sm" color={textColorBid}>
+              {`${leaveDays[leaveDays.length - 1]}`}
+            </Text>
+          </Flex>
+
+          <Flex
+            align="start"
+            justify="space-between"
+            direction={{
+              base: "row",
+              md: "column",
+              lg: "row",
+              xl: "column",
+              "2xl": "row",
+            }}
+            mt="25px"
+          >
+            {!admin ??
+              (<Text fontWeight="700" fontSize="sm" color={textColorBid}>
+                Updated Day: <Text color={textColorDate}>{date}</Text>
+              </Text>)
+            }
             <Link
               href={download}
               mt={{

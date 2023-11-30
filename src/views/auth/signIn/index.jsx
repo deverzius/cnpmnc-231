@@ -94,7 +94,7 @@ function SignIn() {
     setButtonText("Signing in");
     try {
       let response = await AuthApi.Login({
-        email,
+        username: email,
         password,
       });
       console.log(response);
@@ -113,8 +113,9 @@ function SignIn() {
     }
   };
   const setProfile = async (response) => {
-    let user = { ...response.data.user };
-    user.token = response.data.token;
+    let user = { ...response.data.user }
+    console.log("res data:", response.data);
+    user.token = response.data.accessToken;
     user.role = response.data.user.role || "Employee";
     user.remain = response.data.user.remaindingLeaveDays;
     user = JSON.stringify(user);

@@ -104,23 +104,61 @@ export default function Marketplace() {
   });
   console.log(RequestListData, "tran van tai");
   const tableDataComplex = useMemo(() => {
-    const pendingList = RequestListData?.data?.data?.pending || [];
-    const approvedList = RequestListData?.data?.data?.approved || [];
-    const rejectedList = RequestListData?.data?.data?.rejected || [];
+    const dataList = RequestListData?.data?.result || [];
+    const pendingList = dataList.filter((item) => item.status === "pending");
+    const approvedList = dataList.filter((item) => item.status === "approved");
+    const rejectedList = dataList.filter((item) => item.status === "rejected");
 
     const mergedList = [...pendingList, ...approvedList, ...rejectedList]
-      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+    //   .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+    //   .map((item) => ({
+    //     title: [
+    //       item.title,
+    //       item.user.lastname,
+    //       item.user.firstname,
+    //       item.user.email,
+    //     ],
+    //     date: item.updatedAt,
+    //     status: item.status,
+    //     remain: item.user.remaindingLeaveDays,
+    //   }));
+    if (localStorage.getItem("user").role === "Employee")
+    { 
+      mergedList.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
       .map((item) => ({
         title: [
           item.title,
-          item.user.lastname,
-          item.user.firstname,
-          item.user.email,
+          "",
+          "",
+          "",
         ],
         date: item.updatedAt,
         status: item.status,
-        remain: item.user.remaindingLeaveDays,
+        reason: item.reason,
+        admin: false
+
+        // remain: item.user.remaindingLeaveDays,
       }));
+    }
+    else
+    {
+      mergedList.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+      .map((item) => ({
+        title: [
+          item.title,
+          "",
+          "",
+          "",
+        ],
+        date: item.updatedAt,
+        status: item.status,
+        reason: item.reason,
+        leaveDays: item.leaveDays,
+        remain: "",
+        admin: true
+      }));
+    }
+    
 
     return mergedList;
   }, [RequestListData]);
@@ -292,7 +330,10 @@ export default function Marketplace() {
                       ]}
                       image={Nft5}
                       date={formatDate(item.date)}
+                      reason={item.reason}
+                      leaveDays={item.leaveDays}
                       download="#"
+                      admin={item.admin}
                       status={item.status}
                     />
                   ))

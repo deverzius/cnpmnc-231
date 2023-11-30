@@ -7,7 +7,7 @@ class ManageApi {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
     console.log(user?.token);
-    return axios.get(`${base}/leavereqs/all`, {
+    return axios.get(`${base}/leave_reqs/all`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
@@ -19,8 +19,10 @@ class ManageApi {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
     console.log(user?.token);
+
+    console.log(data);
     return axios.put(
-      `${base}/leavereqs/approve`,
+      `${base}/leave_reqs/${data[0]}/approve`,
       data,
       {
         headers: {
@@ -35,7 +37,7 @@ class ManageApi {
     user = JSON.parse(user);
     console.log(user?.token);
     return axios.put(
-      `${base}/leavereqs/reject`,
+      `${base}/leave_reqs/${data[0]}/reject`,
       data,
       {
         headers: {
