@@ -13,7 +13,8 @@ import {
   Button,
   SkeletonText,
   VStack,
-  HStack
+  HStack,
+  ChakraProvider
 } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { MdCheckCircle as ApproveIcon, MdCancel as RejectIcon } from "react-icons/md"
@@ -38,6 +39,7 @@ export default function CheckTable(props) {
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
+
 
   const {
     data: RequestListData,

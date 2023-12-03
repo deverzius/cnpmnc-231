@@ -7,7 +7,7 @@ class UserApi {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
     console.log(user?.token);
-    return axios.get(`${base}/users/${id}`, {
+    return axios.get(`${base}/users/info`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
@@ -18,7 +18,7 @@ class UserApi {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
     console.log(user?.token);
-    return axios.get(`${base}/leavereqs/all`, {
+    return axios.get(`${base}/leave_reqs/all`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,

@@ -50,6 +50,7 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { useAuth } from "../../../auth-context/auth.context";
 import AuthApi from "../../../api/auth";
+import axios from "api";
 function SignIn() {
   const [email, setEmail] = useState(""); // <-- Default values HERE
   const [password, setPassword] = useState(""); // <-- Default values HERE
@@ -107,7 +108,8 @@ function SignIn() {
       console.log(err);
       setButtonText("Sign in");
       if (err.message) {
-        return setError(err.message);
+        // return setError(err.message);
+        return setError("Username or password is incorrect.");
       }
       return setError("There has been an error.");
     }
@@ -116,8 +118,18 @@ function SignIn() {
     let user = { ...response.data.user }
     console.log("res data:", response.data);
     user.token = response.data.accessToken;
-    user.role = response.data.user.role || "Employee";
-    user.remain = response.data.user.remaindingLeaveDays;
+
+    const userData = await axios.get("api/users/info", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+
+    console.log("user data: ", userData.data);
+    
+    user.role = userData.data.user.role === "manager" ? "Admin" : "Employee";
+    user.remain = userData.data.user.remainingDays;
     user = JSON.stringify(user);
     setUser(user);
     localStorage.setItem("user", user);

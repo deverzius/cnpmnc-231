@@ -169,13 +169,17 @@ export default function NFT(props) {
             >
               <Button
                 variant="darkBrand"
-                color="white"
+                color="#fefefe"
                 fontSize="sm"
                 fontWeight="500"
                 borderRadius="70px"
                 px="24px"
                 py="5px"
                 textTransform={"capitalize"}
+                background={
+                  (status === "approved" ? "green.500" : false)
+                  || (status === "pending" ? "orange.500" : "red.600")
+                }
               >
                 {status}
               </Button>

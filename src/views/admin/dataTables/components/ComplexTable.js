@@ -53,7 +53,7 @@ export default function ComplexTable(props) {
     prepareRow,
     initialState,
   } = tableInstance;
-  initialState.pageSize = 5;
+  initialState.pageSize = 10;
 
   console.log(page)
   const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -106,7 +106,7 @@ export default function ComplexTable(props) {
                   if (cell.column.Header === "TITLE") {
                     data = (
                       <VStack>
-                        <Text color={textColor} fontSize='sm' fontWeight='700'>
+                        <Text textAlign="left" color={textColor} fontSize='sm' fontWeight='700'>
                           {cell.value[0]}
                         </Text>
                         <HStack>
@@ -167,13 +167,16 @@ export default function ComplexTable(props) {
                   } else if (cell.column.Header === "REMAIN DAYS") {
                     data = (
                       <Flex align='center'>
-                        <Progress
+                        {/* <Progress
                           variant='table'
                           colorScheme='brandScheme'
                           h='8px'
                           w='108px'
-                          value={cell.value / 30 * 100}
-                        />
+                          value={0}
+                        /> */}
+                        <Text color={textColor} fontSize='sm' fontWeight='700'>
+                          {cell.value}
+                        </Text>
                       </Flex>
                     );
                   }

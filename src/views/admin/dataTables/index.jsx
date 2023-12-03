@@ -63,43 +63,58 @@ export default function Settings() {
   });
 
   const tableDataComplex = useMemo(() => {
-    const pendingList = RequestListData?.data?.data?.pending || [];
-    const approvedList = RequestListData?.data?.data?.approved || [];
-    const rejectedList = RequestListData?.data?.data?.rejected || [];
+    // RequestListData?.data?.data?.pending
+    const pendingList = [];
+    const approvedList = [];
+    const rejectedList = [];
 
+    const result = RequestListData?.data?.result || [];
+
+    for (const item of result) {
+      if (item.status === "pending") {
+        pendingList.push(item);
+      } else if (item.status === "approved") {
+        approvedList.push(item);
+      } else if (item.status === "rejected") {
+        rejectedList.push(item);
+      }
+    }
+
+    console.log(pendingList, approvedList, rejectedList);
     const mergedList = [...pendingList, ...approvedList, ...rejectedList]
       .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
       .map((item) => ({
         title: [
           item.title,
-          item.user.lastname,
-          item.user.firstname,
-          item.user.email,
+          item.User.lastname,
+          item.User.firstname,
+          item.User.email,
         ],
         date: item.updatedAt,
         status: item.status,
-        remain: item.user.remaindingLeaveDays,
+        remain: item.User.remainingDays,
       }));
 
     return mergedList;
   }, [RequestListData]);
 
   const tableDataCheck = useMemo(() => {
-    const pendingList = RequestListData?.data?.data?.pending || [];
+    const result = RequestListData?.data?.result || [];
+    const pendingList = (result ?? []).filter((item) => item.status === "pending");
 
     const mergedList = [...pendingList]
       .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
       .map((item) => ({
         title: [
           item.title,
-          item.user.lastname,
-          item.user.firstname,
-          item.user.email,
+          item.User.lastname,
+          item.User.firstname,
+          item.User.email,
           item.id,
         ],
         date: item.updatedAt,
         reason: item.reason,
-        remain: item.user.remaindingLeaveDays,
+        remain: item.User.remainingDays,
       }));
 
     return mergedList;
@@ -120,7 +135,7 @@ export default function Settings() {
         ) : (
           <ComplexTable
             columnsData={columnsDataComplex}
-            tableData={tableDataComplex.slice(0, 5)}
+            tableData={tableDataComplex}
             refetchAllData={refetchAllData}
           />
         )}

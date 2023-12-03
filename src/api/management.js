@@ -16,13 +16,19 @@ class ManageApi {
   };
 
   static ApproveRequest = (data) => {
+    if (!data.leaveReqIds || data.leaveReqIds.length === 0)
+    {
+      alert("Please select at least one request to approve");
+      return [];
+    }
+
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
     console.log(user?.token);
 
     console.log(data);
     return axios.put(
-      `${base}/leave_reqs/${data[0]}/approve`,
+      `${base}/leave_reqs/approves`,
       data,
       {
         headers: {
@@ -33,11 +39,17 @@ class ManageApi {
     );
   }
   static RejectRequest = (data) => {
+    if (!data.leaveReqIds || data.leaveReqIds.length === 0)
+    {
+      alert("Please select at least one request to reject");
+      return [];
+    }
+
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
     console.log(user?.token);
     return axios.put(
-      `${base}/leave_reqs/${data[0]}/reject`,
+      `${base}/leave_reqs/rejects`,
       data,
       {
         headers: {
