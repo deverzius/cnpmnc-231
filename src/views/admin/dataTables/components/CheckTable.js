@@ -100,6 +100,7 @@ export default function CheckTable(props) {
     console.log('id: ', id)
     history.push({
       pathname: `/admin/view-request`,
+      search: `?id=${id}`,
       state: { id: id }
     })
   }

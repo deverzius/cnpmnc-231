@@ -32,6 +32,7 @@ export default function NFT(props) {
     e.preventDefault();
     history.push({
       pathname: `/admin/view-request`,
+      search: `?id=${id}`,
       state: { id: id}
     })
 }

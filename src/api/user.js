@@ -14,6 +14,19 @@ class UserApi {
       },
     });
   };
+
+  static getInfoForAdmin = (id) => {
+    let user = localStorage.getItem("user");
+    user = JSON.parse(user);
+    console.log(user?.token);
+    return axios.get(`${base}/users/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+  };
+
   static ListRequest = () => {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);

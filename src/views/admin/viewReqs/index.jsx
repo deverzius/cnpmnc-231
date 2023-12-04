@@ -32,14 +32,18 @@ import ManageApi from "api/management";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import axios from "api";
+import UserApi from "api/user";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function ViewReqs() {
 	// Chakra Color Mode
+	// const [curUser, setCurUser] = useState({});
 	const user = JSON.parse(localStorage.getItem("user"));
 	const location = useLocation();
 	const [msg, setMsg] = useState("No data found");
 	const [req, setReq] = useState({});
-	const [id, setId] = useState(null);
+	const [id, setId] = useState(location?.search?.split("=")[1]);
+	const [userId, setUserId] = useState(null);
 	const [selectedDate, setSelectedDate] = useState(null);
 	const handleChangeEvent = (e) => {
 		// console.log(e);
@@ -66,14 +70,15 @@ export default function ViewReqs() {
 	}
 
 	const getReq = async () => {
-		if (!location.state?.id) return;
+		// if (!location.state?.id) return;
+		setId(location?.search?.split("=")[1]);
 
-		setId(location.state.id);
 		try
 		{
 			const res = await ManageApi.getRequest(id);
 			setReq(res?.data?.result);
 			console.log('res: ', res?.data?.result)
+			setUserId(res?.data?.result?.userId);
 
 			let leaveDays = res?.data?.result?.leaveDays;
 			if (leaveDays.length >= 1)
@@ -99,10 +104,23 @@ export default function ViewReqs() {
 			setMsg("No data found");
 		}
 	}
+	// const setUserInfo = async () => {
+	// 	await UserApi.getInfoForAdmin(userId)
+	// 		.then(res => {
+	// 			console.log(res)
+	// 			setCurUser({ ...res?.data?.result })
+	// 		})
+	// 		.catch(err => {
+	// 			console.log(err)
+	// 		})
+	// }
 
 	useEffect(() => {
 		getReq();
-	}, [id])
+	}, [location])
+	// useEffect(() => {
+	// 	setUserInfo();
+	// }, [userId])
 
 	// useEffect(() => {
 	// 	console.log(req)
@@ -181,7 +199,7 @@ export default function ViewReqs() {
 					Back to Approve Request Page
 				</Button>
 				{
-					user.role !== "Employee" ?
+					user?.role !== "Employee" ?
 						""
 						:
 						<Button
