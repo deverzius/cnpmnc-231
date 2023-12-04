@@ -15,6 +15,18 @@ class ManageApi {
     });
   };
 
+  static getRequest = (id) => {
+    let user = localStorage.getItem("user");
+    user = JSON.parse(user);
+    console.log(user?.token);
+    return axios.get(`${base}/leave_reqs/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+  };
+
   static ApproveRequest = (data) => {
     if (!data.leaveReqIds || data.leaveReqIds.length === 0)
     {

@@ -133,7 +133,10 @@ export default function CheckTable(props) {
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>
           {headerGroups.map((headerGroup, index) => (
-            <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
+            <Tr
+              {...headerGroup.getHeaderGroupProps()}
+              key={index}
+            >
               {headerGroup.headers.map((column, index) => (
                 <Th
                   {...column.getHeaderProps(column.getSortByToggleProps())}

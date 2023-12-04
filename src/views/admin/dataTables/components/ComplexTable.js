@@ -53,9 +53,10 @@ export default function ComplexTable(props) {
     prepareRow,
     initialState,
   } = tableInstance;
-  initialState.pageSize = 10;
+  // initialState.pageSize = 5;
+  // initialState.pageSize = 10;
 
-  console.log(page)
+  console.log('page ', page)
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
   return (
@@ -105,7 +106,7 @@ export default function ComplexTable(props) {
                   let data = "";
                   if (cell.column.Header === "TITLE") {
                     data = (
-                      <VStack>
+                      <VStack >
                         <Text textAlign="left" color={textColor} fontSize='sm' fontWeight='700'>
                           {cell.value[0]}
                         </Text>
@@ -224,7 +225,7 @@ ComplexTable.Skeleton = (props) => {
     prepareRow,
     initialState,
   } = tableInstance;
-  initialState.pageSize = 11;
+  // initialState.pageSize = 11;
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
@@ -279,7 +280,8 @@ ComplexTable.Skeleton = (props) => {
                       key={index}
                       fontSize={{ sm: "14px" }}
                       minW={{ sm: "150px", md: "200px", lg: "auto" }}
-                      borderColor='transparent'>
+                      borderColor='transparent'
+                    >
                       <SkeletonText mt='4' noOfLines={2} spacing='4' skeletonHeight='2' w={{ base: "100px", "3xl": "120px" }} />
                     </Td>
                   );
