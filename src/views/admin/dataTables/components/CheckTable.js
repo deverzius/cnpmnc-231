@@ -32,6 +32,7 @@ import Menu from "components/menu/MainMenu";
 import { formatDate } from "utils/date";
 import { useQuery } from "@tanstack/react-query";
 import ManageApi from "api/management";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 export default function CheckTable(props) {
   const [isQueryEnabled, setIsQueryEnabled] = useState(false);
   const [select, setSelect] = useState([])
@@ -39,6 +40,7 @@ export default function CheckTable(props) {
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
+  const history = useHistory();
 
 
   const {
@@ -80,7 +82,8 @@ export default function CheckTable(props) {
     setSelect(prevSelect => {
       const index = prevSelect.indexOf(element);
 
-      if (index !== -1) {
+      if (index !== -1)
+      {
         // Nếu phần tử đã tồn tại, loại bỏ nó khỏi mảng
         const updatedSelect = [...prevSelect];
         updatedSelect.splice(index, 1);
@@ -91,6 +94,15 @@ export default function CheckTable(props) {
       return [...prevSelect, element];
     });
   })
+
+  const handleClickTableRow = (e, id) => {
+    e.preventDefault();
+    console.log('id: ', id)
+    history.push({
+      pathname: `/admin/view-request`,
+      state: { id: id }
+    })
+  }
 
   const tableInstance = useTable(
     {
@@ -159,19 +171,28 @@ export default function CheckTable(props) {
           {page.map((row, index) => {
             prepareRow(row);
             return (
-              <Tr {...row.getRowProps()} key={index}>
+              <Tr
+                {...row.getRowProps()} key={index}
+                cursor='pointer'
+                _hover={{ bg: "gray.200" }}
+              >
+
                 {row.cells.map((cell, index) => {
                   let data = "";
-                  if (cell.column.Header === "TITLE") {
+                  if (cell.column.Header === "TITLE")
+                  {
                     data = (
                       <Flex align='center'>
                         <Checkbox
                           defaultChecked={false}
-                          colorScheme='brandScheme'
+                          // colorScheme='brandScheme'
+                          borderColor={textColor}
                           me='10px'
                           onChange={() => { addUniqueElement(cell.value[4]) }}
                         />
-                        <VStack>
+                        <VStack
+                          onClick={e => handleClickTableRow(e, row.values.title[4])}
+                        >
                           <Text color={textColor} fontSize='sm' fontWeight='700'>
                             {cell.value[0]}
                           </Text>
@@ -186,7 +207,8 @@ export default function CheckTable(props) {
                         </VStack>
                       </Flex>
                     );
-                  } else if (cell.column.Header === "REMAIN DAYS") {
+                  } else if (cell.column.Header === "REMAIN DAYS")
+                  {
                     data = (
                       <Flex align='center'>
                         <Text
@@ -198,13 +220,15 @@ export default function CheckTable(props) {
                         </Text>
                       </Flex>
                     );
-                  } else if (cell.column.Header === "REASON") {
+                  } else if (cell.column.Header === "REASON")
+                  {
                     data = (
                       <Text color={textColor} fontSize='sm' fontWeight='700' sx={{ overflow: "hidden", width: "200px" }}>
                         {cell.value}
                       </Text>
                     );
-                  } else if (cell.column.Header === "DATE") {
+                  } else if (cell.column.Header === "DATE")
+                  {
                     data = (
                       <Text color={textColor} fontSize='sm' fontWeight='700'>
                         {formatDate(cell.value)}

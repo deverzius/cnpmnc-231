@@ -52,22 +52,6 @@ const routes = [
     secondary: true,
   },
   {
-    name: "View Request",
-    layout: "/admin",
-    path: "/view-request",
-    role: "all",
-    icon: (
-      <Icon
-        as={MdDashboard}
-        width='20px'
-        height='20px'
-        color='inherit'
-      />
-    ),
-    component: ViewRequest,
-    secondary: false,
-  },
-  {
     name: "Approve Request",
     layout: "/admin",
     role: "Admin",
@@ -83,6 +67,22 @@ const routes = [
   //   icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
   //   component: Profile,
   // },
+  {
+    name: "View Request",
+    layout: "/admin",
+    path: "/view-request",
+    role: "all",
+    icon: (
+      <Icon
+        as={MdDashboard}
+        width='20px'
+        height='20px'
+        color='inherit'
+      />
+    ),
+    component: ViewRequest,
+    secondary: false,
+  },
   {
     name: "Signin",
     layout: "/auth",

@@ -89,6 +89,7 @@ export default function Settings() {
           item.User.lastname,
           item.User.firstname,
           item.User.email,
+          item.id,
         ],
         date: item.updatedAt,
         status: item.status,

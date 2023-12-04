@@ -30,11 +30,13 @@ import Menu from "components/menu/MainMenu";
 // Assets
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 import { formatDate } from "utils/date";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 export default function ComplexTable(props) {
   const { columnsData, tableData } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
+  const history = useHistory();
 
   const tableInstance = useTable(
     {
@@ -55,6 +57,15 @@ export default function ComplexTable(props) {
   } = tableInstance;
   // initialState.pageSize = 5;
   // initialState.pageSize = 10;
+
+  const handleClickTableRow = (e, id) => {
+    e.preventDefault();
+    console.log('id: ', id)
+    history.push({
+      pathname: `/admin/view-request`,
+      state: { id: id}
+    })
+  }
 
   console.log('page ', page)
   const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -101,7 +112,13 @@ export default function ComplexTable(props) {
           {page.map((row, index) => {
             prepareRow(row);
             return (
-              <Tr {...row.getRowProps()} key={index}>
+              <Tr
+                {...row.getRowProps()}
+                key={index}
+                onClick={e => handleClickTableRow(e, row.values.title[4])}
+                cursor='pointer'
+                _hover={{ bg: "gray.200" }}
+              >
                 {row.cells.map((cell, index) => {
                   let data = "";
                   if (cell.column.Header === "TITLE") {
@@ -249,7 +266,10 @@ ComplexTable.Skeleton = (props) => {
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>
           {headerGroups.map((headerGroup, index) => (
-            <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
+            <Tr
+              {...headerGroup.getHeaderGroupProps()}
+              key={index}
+            >
               {headerGroup.headers.map((column, index) => (
                 <Th
                   {...column.getHeaderProps(column.getSortByToggleProps())}

@@ -35,6 +35,7 @@ import axios from "api";
 
 export default function ViewReqs() {
 	// Chakra Color Mode
+	const user = JSON.parse(localStorage.getItem("user"));
 	const location = useLocation();
 	const [msg, setMsg] = useState("No data found");
 	const [req, setReq] = useState({});
@@ -49,8 +50,9 @@ export default function ViewReqs() {
 		if (!id)
 		{
 			alert("No data found");
+			return
 		}
-		
+
 		try
 		{
 			await ManageApi.updateRequest(id, req)
@@ -71,7 +73,7 @@ export default function ViewReqs() {
 		{
 			const res = await ManageApi.getRequest(id);
 			setReq(res?.data?.result);
-			console.log('res: ', res)
+			console.log('res: ', res?.data?.result)
 
 			let leaveDays = res?.data?.result?.leaveDays;
 			if (leaveDays.length >= 1)
@@ -112,7 +114,11 @@ export default function ViewReqs() {
 			...req
 		});
 	}
-``
+	const handleBack = () => {
+		window.history.back();
+	}
+
+
 	return (
 		<Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
 			<FormControl>
@@ -170,10 +176,27 @@ export default function ViewReqs() {
 					px="27"
 					me="38px"
 					shadow="rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;"
-					onClick={handleUpdate}
+					onClick={handleBack}
 				>
-					Update Request
+					Back to Approve Request Page
 				</Button>
+				{
+					user.role !== "Employee" ?
+						""
+						:
+						<Button
+							colorScheme="brand"
+							fontWeight="500"
+							fontSize="14px"
+							py="20px"
+							px="27"
+							me="38px"
+							shadow="rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;"
+							onClick={handleUpdate}
+						>
+							Update Request
+						</Button>
+				}
 				{/* <Button
 					colorScheme="brand"
 					fontWeight="500"
