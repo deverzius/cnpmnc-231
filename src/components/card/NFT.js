@@ -13,6 +13,7 @@ import {
   Skeleton,
   SkeletonText,
 } from "@chakra-ui/react";
+import { useHistory } from "react-router-dom";
 // Custom components
 import Card from "components/card/Card.js";
 // Assets
@@ -20,16 +21,26 @@ import React, { useState } from "react";
 import { IoHeart, IoHeartOutline } from "react-icons/io5";
 
 export default function NFT(props) {
-  const { image, name, author, bidders, download, date, status, reason, leaveDays, admin } = props;
+  const { id, title, name, author, bidders, download, date, status, reason, leaveDays, admin } = props;
 
   const textColor = useColorModeValue("navy.700", "white");
   const textColorBid = useColorModeValue("brand.500", "white");
   const textColorDate = useColorModeValue("gray.800", "white");
-  return (
-    <Card p="20px">
-      <Flex direction={{ base: "column" }} justify="center" >
-        <Box mb={{ base: "20px", "2xl": "20px" }} position="relative">
-          {/* <Flex
+  const history = useHistory();
+
+  const handleClick = (e, id) => {
+    e.preventDefault();
+    history.push({
+      pathname: `/admin/view-request`,
+      state: { id: id}
+    })
+}
+
+return (
+  <Card p="20px">
+    <Flex direction={{ base: "column" }} justify="center" >
+      <Box mb={{ base: "20px", "2xl": "20px" }} position="relative">
+        {/* <Flex
             // src={image}
             bg={`
             linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%)
@@ -39,7 +50,7 @@ export default function NFT(props) {
             h={{ base: "100%", "3xl": "200px" }}
             borderRadius="20px"
           ></Flex> */}
-          {/* <Button
+        {/* <Button
             position='absolute'
             bg='white'
             _hover={{ bg: "whiteAlpha.900" }}
@@ -62,47 +73,47 @@ export default function NFT(props) {
               color='brand.500'
             />
           </Button> */}
-        </Box>
-        <Flex flexDirection="column" justify="space-between" h="100%">
-          <Flex
-            justify="space-between"
-            direction={{
-              base: "row",
-              md: "column",
-              lg: "row",
-              xl: "column",
-              "2xl": "row",
-            }}
-            mb="auto"
-          >
-            <Flex direction="column">
-              <Text
-                color={textColor}
-                fontSize={{
-                  base: "xl",
-                  md: "lg",
-                  lg: "lg",
-                  xl: "lg",
-                  "2xl": "md",
-                  "3xl": "lg",
-                }}
-                mb="5px"
-                fontWeight="bold"
-                me="14px"
-              >
-                {name}
-              </Text>
-              <Text
-                color='secondaryGray.600'
-                fontSize={{
-                  base: "sm",
-                }}
-                fontWeight='400'
-                me='14px'>
-                {reason}
-              </Text>
-            </Flex>
-            {/* <AvatarGroup
+      </Box>
+      <Flex flexDirection="column" justify="space-between" h="100%">
+        <Flex
+          justify="space-between"
+          direction={{
+            base: "row",
+            md: "column",
+            lg: "row",
+            xl: "column",
+            "2xl": "row",
+          }}
+          mb="auto"
+        >
+          <Flex direction="column">
+            <Text
+              color={textColor}
+              fontSize={{
+                base: "xl",
+                md: "lg",
+                lg: "lg",
+                xl: "lg",
+                "2xl": "md",
+                "3xl": "lg",
+              }}
+              mb="5px"
+              fontWeight="bold"
+              me="14px"
+            >
+              {title}
+            </Text>
+            <Text
+              color='secondaryGray.600'
+              fontSize={{
+                base: "sm",
+              }}
+              fontWeight='400'
+              me='14px'>
+              {reason}
+            </Text>
+          </Flex>
+          {/* <AvatarGroup
               max={3}
               color={textColorBid}
               size='sm'
@@ -118,77 +129,78 @@ export default function NFT(props) {
                 <Avatar key={key} src={avt} />
               ))}
             </AvatarGroup> */}
-          </Flex>
+        </Flex>
 
-          <Flex
-            align="start"
-            justify="space-between"
-            direction={{
-              base: "row",
-              md: "column",
-              lg: "row",
-              xl: "column",
-              "2xl": "row",
-            }}
-            mt="25px"
-          >
-            <Text fontWeight="700" fontSize="sm" color={textColorBid}>
-              {`${leaveDays[0]}`}
-            </Text>
-            <Text fontWeight="700" fontSize="sm" color={textColorBid}>
-              {`${leaveDays[leaveDays.length - 1]}`}
-            </Text>
-          </Flex>
+        <Flex
+          align="start"
+          justify="space-between"
+          direction={{
+            base: "row",
+            md: "column",
+            lg: "row",
+            xl: "column",
+            "2xl": "row",
+          }}
+          mt="25px"
+        >
+          <Text fontWeight="700" fontSize="sm" color={textColorBid}>
+            from: {`${leaveDays[0]}`}
+          </Text>
+          <Text fontWeight="700" fontSize="sm" color={textColorBid}>
+            to: {`${leaveDays[leaveDays.length - 1]}`}
+          </Text>
+        </Flex>
 
-          <Flex
-            align="start"
-            justify="space-between"
-            direction={{
-              base: "row",
-              md: "column",
-              lg: "row",
-              xl: "column",
-              "2xl": "row",
+        <Flex
+          align="start"
+          justify="space-between"
+          direction={{
+            base: "row",
+            md: "column",
+            lg: "row",
+            xl: "column",
+            "2xl": "row",
+          }}
+          mt="25px"
+        >
+          {!admin ??
+            (<Text fontWeight="700" fontSize="sm" color={textColorBid}>
+              Updated Day: <Text color={textColorDate}>{date}</Text>
+            </Text>)
+          }
+          <Link
+            href={download}
+            mt={{
+              base: "0px",
+              md: "10px",
+              lg: "0px",
+              xl: "10px",
+              "2xl": "0px",
             }}
-            mt="25px"
           >
-            {!admin ??
-              (<Text fontWeight="700" fontSize="sm" color={textColorBid}>
-                Updated Day: <Text color={textColorDate}>{date}</Text>
-              </Text>)
-            }
-            <Link
-              href={download}
-              mt={{
-                base: "0px",
-                md: "10px",
-                lg: "0px",
-                xl: "10px",
-                "2xl": "0px",
-              }}
+            <Button
+              variant="darkBrand"
+              color="#fefefe"
+              fontSize="sm"
+              fontWeight="500"
+              borderRadius="70px"
+              px="24px"
+              py="5px"
+              textTransform={"capitalize"}
+              background={
+                (status === "approved" ? "green.500" : false)
+                || (status === "pending" ? "orange.500" : "red.600")
+              }
+              onClick={(e) => handleClick(e, id)}
             >
-              <Button
-                variant="darkBrand"
-                color="#fefefe"
-                fontSize="sm"
-                fontWeight="500"
-                borderRadius="70px"
-                px="24px"
-                py="5px"
-                textTransform={"capitalize"}
-                background={
-                  (status === "approved" ? "green.500" : false)
-                  || (status === "pending" ? "orange.500" : "red.600")
-                }
-              >
-                {status}
-              </Button>
-            </Link>
-          </Flex>
+              {status}
+            </Button>
+          </Link>
         </Flex>
       </Flex>
-    </Card>
-  );
+    </Flex>
+  </Card>
+);
 }
 // eslint-disable-next-line react/display-name
 NFT.Skeleton = () => {

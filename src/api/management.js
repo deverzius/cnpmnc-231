@@ -27,6 +27,20 @@ class ManageApi {
     });
   };
 
+  static updateRequest = (id, data) => {
+    let user = localStorage.getItem("user");
+    user = JSON.parse(user);
+    console.log(user?.token);
+    return axios.put(`${base}/leave_reqs/${id}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+  };
+
   static ApproveRequest = (data) => {
     if (!data.leaveReqIds || data.leaveReqIds.length === 0)
     {

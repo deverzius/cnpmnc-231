@@ -335,6 +335,8 @@ export default function Marketplace() {
                       download="#"
                       admin={item.admin}
                       status={item.status}
+                      id={item.id}
+                      title={item.title}
                     />
                   ))
               )}
@@ -459,6 +461,8 @@ export default function Marketplace() {
                       date="30s ago"
                       image={Nft5}
                       status="Approved"
+                      id={item.id}
+                      title={item.title}
                     />
                   );
                 }

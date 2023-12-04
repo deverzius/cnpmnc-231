@@ -51,22 +51,22 @@ const routes = [
     component: NFTMarketplace,
     secondary: true,
   },
-  // {
-  //   name: "View Request",
-  //   layout: "/admin",
-  //   path: "/view-request/:id",
-  //   role: "all",
-  //   icon: (
-  //     <Icon
-  //       as={MdDashboard}
-  //       width='20px'
-  //       height='20px'
-  //       color='inherit'
-  //     />
-  //   ),
-  //   component: ViewRequest,
-  //   secondary: false,
-  // },
+  {
+    name: "View Request",
+    layout: "/admin",
+    path: "/view-request",
+    role: "all",
+    icon: (
+      <Icon
+        as={MdDashboard}
+        width='20px'
+        height='20px'
+        color='inherit'
+      />
+    ),
+    component: ViewRequest,
+    secondary: false,
+  },
   {
     name: "Approve Request",
     layout: "/admin",
