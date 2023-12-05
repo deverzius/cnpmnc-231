@@ -51,7 +51,7 @@ export default function Settings() {
     queryFn: () => ManageApi.ListRequest(),
     enabled: true,
   });
-  console.log(ManageApi.ListRequest);
+
   const {
     data: UpcomingRequests,
     refetch,
@@ -133,14 +133,6 @@ export default function Settings() {
             refetchAllData={refetchAllData}
           />
         )}
-        {/* <DevelopmentTable}
-          columnsData={columnsDataDevelopment}
-          tableData={tableDataDevelopment}
-        />
-        <ColumnsTable
-          columnsData={columnsDataColumns}
-          tableData={tableDataColumns}
-        /> */}
       </SimpleGrid>
     </Box>
   );

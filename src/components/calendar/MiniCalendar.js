@@ -22,6 +22,7 @@ export default function MiniCalendar(props) {
       h="max-content"
       {...rest}
       mt="5"
+      data-testid="minicalendar"
     >
       <Flex
         justify="center"

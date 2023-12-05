@@ -4,5 +4,5 @@ let BACKEND_SERVER = null;
 // } else {
 //   BACKEND_SERVER = "http://192.168.43.57:5000";
 // }
-BACKEND_SERVER = "http://192.168.43.57:5000";
+BACKEND_SERVER = "http://localhost:5000";
 export const API_SERVER = BACKEND_SERVER;

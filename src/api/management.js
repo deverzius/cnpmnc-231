@@ -6,7 +6,6 @@ class ManageApi {
   static ListRequest = () => {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
-    console.log(user?.token);
     return axios.get(`${base}/leavereqs/all`, {
       headers: {
         "Content-Type": "application/json",
@@ -18,7 +17,6 @@ class ManageApi {
   static ApproveRequest = (data) => {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
-    console.log(user?.token);
     return axios.put(
       `${base}/leavereqs/approve`,
       data,
@@ -33,7 +31,6 @@ class ManageApi {
   static RejectRequest = (data) => {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
-    console.log(user?.token);
     return axios.put(
       `${base}/leavereqs/reject`,
       data,

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { createRoot } from 'react-dom/client';
-import React from "react"
+import React from 'react';
+import ReactDOM from "react-dom/client";
 import "assets/css/App.css";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import AuthLayout from "layouts/auth";
@@ -24,7 +24,7 @@ user = JSON.parse(user);
 
 const queryClient = new QueryClient()
 // eslint-disable-next-line react/no-deprecated
-const root = createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <QueryClientProvider client={queryClient}>
     <ChakraProvider theme={theme}>
