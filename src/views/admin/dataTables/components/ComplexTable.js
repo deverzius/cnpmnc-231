@@ -68,7 +68,6 @@ export default function ComplexTable(props) {
     })
   }
 
-  console.log('page ', page)
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
   return (
@@ -177,7 +176,6 @@ export default function ComplexTable(props) {
                       </Flex>
                     );
                   } else if (cell.column.Header === "DATE") {
-                    console.log(cell.value)
                     data = (
                       <Text color={textColor} fontSize='sm' fontWeight='700'>
                         {formatDate(cell.value)}

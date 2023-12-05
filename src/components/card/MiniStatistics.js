@@ -66,7 +66,6 @@ export default function Default(props) {
 // eslint-disable-next-line react/display-name
 Default.Skeleton = (props) => {
   const { startContent, name, value } = props;
-  const textColor = useColorModeValue("secondaryGray.900", "white");
   const textColorSecondary = "secondaryGray.600";
 
   return (

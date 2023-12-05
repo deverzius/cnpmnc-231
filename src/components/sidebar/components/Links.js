@@ -14,7 +14,6 @@ export function SidebarLinks(props) {
   const { setUser } = useAuth();
   let { user } = useAuth();
   const handleLogout = async () => {
-    // console.log("Sgmfi");
     await AuthApi.Logout(user);
     await setUser(null);
     localStorage.removeItem("user");

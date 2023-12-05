@@ -73,7 +73,6 @@ class ManageApi {
 
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
-    console.log(user?.token);
     return axios.put(
       `${base}/leave_reqs/rejects`,
       data,

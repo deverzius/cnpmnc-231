@@ -79,7 +79,6 @@ function SignIn() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const login = async (event) => {
-    console.log(email, password);
     if (event) {
       event.preventDefault();
     }
@@ -98,14 +97,12 @@ function SignIn() {
         username: email,
         password,
       });
-      console.log(response);
       if (response.data && response.data.success === false) {
         setButtonText("Sign in");
         return setError(response.data.msg);
       }
       return setProfile(response);
     } catch (err) {
-      console.log(err);
       setButtonText("Sign in");
       if (err.message) {
         // return setError(err.message);
@@ -206,7 +203,7 @@ function SignIn() {
                 color={textColor}
                 mb="8px"
               >
-                Email<Text color={brandStars}>*</Text>
+                Username<Text color={brandStars}>*</Text>
               </FormLabel>
               <Input
                 isRequired={true}

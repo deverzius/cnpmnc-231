@@ -1,12 +1,8 @@
 // Chakra imports
 import {
-  AvatarGroup,
-  Avatar,
   Box,
   Button,
   Flex,
-  Icon,
-  Image,
   Link,
   Text,
   useColorModeValue,
@@ -17,8 +13,7 @@ import { useHistory } from "react-router-dom";
 // Custom components
 import Card from "components/card/Card.js";
 // Assets
-import React, { useState } from "react";
-import { IoHeart, IoHeartOutline } from "react-icons/io5";
+import React from "react";
 
 export default function NFT(props) {
   const { id, title, name, author, bidders, download, date, status, reason, leaveDays, admin } = props;
