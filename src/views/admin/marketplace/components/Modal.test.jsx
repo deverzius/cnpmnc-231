@@ -73,15 +73,15 @@ describe("RequestModal Component", () => {
     test("closes modal when Cancel button is clicked", async () => {
       const ApproveRequestMock = jest.fn().mockResolvedValue({});
       EmployeeApi.SubmitRequest = ApproveRequestMock;
-      const modal = screen.getByTestId("modal");
-
+      
       fireEvent.click(screen.getByText("Create Request"));
+      const modal = screen.getByTestId("modal")
       fireEvent.click(screen.getByText("Cancel"));
 
       await waitFor(() => {
         expect(ApproveRequestMock).not.toHaveBeenCalled();
         expect(refetch).not.toHaveBeenCalled();
-        expect(modal.firstChild).not.toBeInTheDocument();
+        expect(modal).not.toBeInTheDocument();
       });
     });
 
@@ -143,6 +143,8 @@ describe("RequestModal Component", () => {
         expect(EmployeeApi.SubmitRequest).toHaveBeenCalledWith({
           title: "Test Leave Request",
           reason: "Testing the leave request feature",
+          description: "",
+          leaveDays: [],
           // start_date: expect.any(Date),
           // end_date: expect.any(Date),
         });

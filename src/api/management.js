@@ -6,7 +6,7 @@ class ManageApi {
   static ListRequest = () => {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
-    console.log(user?.token);
+    // console.log(user?.token);
     return axios.get(`${base}/leave_reqs/all`, {
       headers: {
         "Content-Type": "application/json",
@@ -18,7 +18,7 @@ class ManageApi {
   static getRequest = (id) => {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
-    console.log(user?.token);
+    // console.log(user?.token);
     return axios.get(`${base}/leave_reqs/${id}`, {
       headers: {
         "Content-Type": "application/json",
@@ -30,7 +30,7 @@ class ManageApi {
   static updateRequest = (id, data) => {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
-    console.log(user?.token);
+    // console.log(user?.token);
     return axios.put(`${base}/leave_reqs/${id}`,
       data,
       {
@@ -50,9 +50,9 @@ class ManageApi {
 
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
-    console.log(user?.token);
+    // console.log(user?.token);
 
-    console.log(data);
+    // console.log(data);
     return axios.put(
       `${base}/leave_reqs/approves`,
       data,
@@ -73,6 +73,7 @@ class ManageApi {
 
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
+    onsole.log(user?.token);
     return axios.put(
       `${base}/leave_reqs/rejects`,
       data,

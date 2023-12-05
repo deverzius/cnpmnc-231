@@ -6,7 +6,7 @@ class UserApi {
   static getInfo = (id) => {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
-    console.log(user?.token);
+    // console.log(user?.token);
     return axios.get(`${base}/users/info`, {
       headers: {
         "Content-Type": "application/json",
@@ -18,7 +18,7 @@ class UserApi {
   static getInfoForAdmin = (id) => {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
-    console.log(user?.token);
+    // console.log(user?.token);
     return axios.get(`${base}/users/${id}`, {
       headers: {
         "Content-Type": "application/json",
@@ -30,7 +30,7 @@ class UserApi {
   static ListRequest = () => {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
-    console.log(user?.token);
+    // console.log(user?.token);
     return axios.get(`${base}/leave_reqs/all`, {
       headers: {
         "Content-Type": "application/json",
