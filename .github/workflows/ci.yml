@@ -1,7 +1,6 @@
 name: CD
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  # VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 on:
   push:
     branches:
@@ -11,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Test the code
+        run: npm run test
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
       - name: Pull Vercel Environment Information
