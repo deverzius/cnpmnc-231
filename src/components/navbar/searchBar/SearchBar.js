@@ -27,22 +27,30 @@ export function SearchBar(props) {
   const [searchList, setSearchList] = React.useState([]);
 
   const handleChangeSearch = async (e) => {
+    if (e.target.value === "")
+    { 
+      return
+    }
+
     await ManageApi.ListRequest()
       .then(res => {
         boxRef.current.style.display = "block";
         const result = res?.data?.result;
 
-        const titleList = result.filter(item => item.title.toLowerCase().includes(e.target.value.toLowerCase()));
-        const reasonList = result.filter(item => item.reason.toLowerCase().includes(e.target.value.toLowerCase()));
+        let titleList = result.filter(item => item.title.toLowerCase().includes(e.target.value.toLowerCase()));
 
-        const newList = [...titleList, ...reasonList];
-        const mergedList = newList.reduce((res, item) => {
-          res[item.id] = item;
-          return res;
-        }, {});
-        console.log(Object.values(mergedList));
+        console.log(titleList)
+        // const reasonList = result.filter(item => item.reason.toLowerCase().includes(e.target.value.toLowerCase()));
 
-        setSearchList(Object.values(mergedList));
+        // const newList = [...titleList, ...reasonList];
+        // const mergedList = newList.reduce((res, item) => {
+        //   res[item.id] = item;
+        //   return res;
+        // }, {});
+        // console.log(Object.values(mergedList));
+        titleList.sort((a, b) => a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 1);
+
+        setSearchList(titleList);
       })
       .catch(err => {
         console.log(err);
@@ -58,6 +66,7 @@ export function SearchBar(props) {
       search: `?id=${id}`,
       state: { id: id }
     })
+    console.log("clicked search item")
     boxRef.current.style.display = "none";
   }
 
@@ -98,6 +107,7 @@ export function SearchBar(props) {
         borderRadius={borderRadius ? borderRadius : "30px"}
         placeholder={placeholder ? placeholder : "Search..."}
         onChange={handleChangeSearch}
+        data-testid='search-input'
         onFocus={() => {
           boxRef.current.style.display = "block";
         }}
@@ -119,6 +129,7 @@ export function SearchBar(props) {
           onBlur={() => {
             boxRef.current.style.display = "none";
           }}
+          data-testid='search-results'
         >
           {searchList?.map(item => (
             <ListItem

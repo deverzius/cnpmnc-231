@@ -71,6 +71,7 @@ const RequestModal = ({ refetch }) => {
     // Enable the query when the button is clicked
     if (!title || !reason || !selectedDate)
     {
+      alert("Please fill in all the fields!")
       return
     }
 
