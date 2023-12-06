@@ -96,7 +96,7 @@ describe("SearchBar Component", () => {
 			expect(searchBar).toBeInTheDocument();
 		});
 
-		test("Show results box when input a value", async () => {
+		test("Display the results box when a value is input", async () => {
 			fireEvent.change(screen.getByPlaceholderText("Search..."), {
 				target: { value: "a" },
 			});
@@ -121,8 +121,8 @@ describe("SearchBar Component", () => {
 			);
 		});
 
-		// tim kiem dung
-		test("True search results test", async () => {
+
+		test("Show accurate search results", async () => {
 			fireEvent.change(screen.getByPlaceholderText("Search..."), {
 				target: { value: "Du lich" },
 			});
@@ -138,8 +138,8 @@ describe("SearchBar Component", () => {
 			});
 		});
 
-		// thu tu
-		test("True search result orders", async () => {
+
+		test("Check if search results are displayed in the correct order", async () => {
 			fireEvent.change(screen.getByPlaceholderText("Search..."), {
 				target: { value: "Xin" },
 			});
@@ -154,8 +154,8 @@ describe("SearchBar Component", () => {
 			});
 		});
 
-		// khong hien ket qua neu khong co string
-		test("No result found if admin input empty string", async () => {
+
+		test("No result found if input is an empty string", async () => {
 			fireEvent.change(screen.getByPlaceholderText("Search..."), {
 				target: { value: "" },
 			});
@@ -167,7 +167,7 @@ describe("SearchBar Component", () => {
 			});
 		});
 
-		// ket qua case-insensitive
+
 		test("case-insensitive search", async () => {
 			fireEvent.change(screen.getByPlaceholderText("Search..."), {
 				target: { value: "Nghi THaM nGUOi" },
@@ -180,8 +180,8 @@ describe("SearchBar Component", () => {
 			});
 		});
 
-		// click vao hien dung trang: hien duoc trang moi, dung url, du lieu dung
-		test("Click on search result", async () => {
+
+		test("Click on a search result", async () => {
 			fireEvent.change(screen.getByPlaceholderText("Search..."), {
 				target: { value: "Du lich" },
 			});
