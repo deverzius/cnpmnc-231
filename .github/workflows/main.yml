@@ -1,4 +1,4 @@
-name: CD
+name: CI/CD Frontend
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
 on:
@@ -6,12 +6,24 @@ on:
     branches:
       - main
 jobs:
+  Integration:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '18.x'
+    - name: Install packages 
+      run: npm i
+    - name: Run tests
+      run: npm run test a
+
   Deploy-Production:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Test the code
-        run: npm run test a
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
       - name: Pull Vercel Environment Information
