@@ -33,6 +33,8 @@ import { formatDate } from "utils/date";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 export default function ComplexTable(props) {
   const { columnsData, tableData } = props;
+  console.log('columnsData: ', columnsData)
+  console.log('tableData: ', tableData)
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
