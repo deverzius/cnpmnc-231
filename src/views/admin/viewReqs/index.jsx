@@ -59,7 +59,11 @@ export default function ViewReqs() {
 
 		try
 		{
-			await ManageApi.updateRequest(id, req)
+			let sendObj = req;
+			sendObj.leaveDay = {
+				date: req.leaveDays
+			}
+			await ManageApi.updateRequest(id, JSON.stringify(sendObj))
 				.then(res => console.log(res))
 				.then(() => alert("Update successfully"))
 		}
@@ -77,7 +81,7 @@ export default function ViewReqs() {
 		{
 			const res = await ManageApi.getRequest(id);
 			setReq(res?.data?.result);
-			console.log('res: ', res?.data?.result)
+			// console.log('res: ', res?.data?.result)
 			setUserId(res?.data?.result?.userId);
 
 			let leaveDays = res?.data?.result?.leaveDays;
@@ -85,7 +89,7 @@ export default function ViewReqs() {
 			{
 				const fDate = new Date(leaveDays[0]);
 				const lDate = new Date(leaveDays[leaveDays.length - 1]);
-				console.log(fDate, lDate);
+				// console.log(fDate, lDate);
 				setSelectedDate([fDate, lDate]);
 			}
 
