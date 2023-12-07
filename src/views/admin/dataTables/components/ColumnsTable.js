@@ -64,7 +64,12 @@ export default function ColumnsTable(props) {
         </Text>
         <Menu />
       </Flex>
-      <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
+      <Table {...getTableProps()}
+        variant='simple'
+        color='gray.500'
+        mb='24px'
+        data-testid='history-table'
+      >
         <Thead>
           {headerGroups.map((headerGroup, index) => (
             <Tr {...headerGroup.getHeaderGroupProps()} key={index}>

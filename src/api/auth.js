@@ -2,11 +2,11 @@ import axios from "./index";
 
 class AuthApi {
   static Login = (data) => {
-    return axios.post(`/auth/login`, data);
+    return axios.post(`api/auth/login`, data);
   };
 
   static Register = (data) => {
-    return axios.post(`/auth/signup`, data);
+    return axios.post(`api/auth/signup`, data);
   };
 
   static Logout = (data) => {

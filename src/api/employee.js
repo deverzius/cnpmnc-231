@@ -6,8 +6,9 @@ class EmployeeApi {
   static SubmitRequest = (data) => {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
-    console.log(user?.token);
-    return axios.post(`${base}/leavereqs`, data, {
+    // console.log('Leave requests', JSON.stringify(data));
+    // console.log(user?.token);
+    return axios.post(`${base}/leave_reqs`, JSON.stringify(data), {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
@@ -17,8 +18,8 @@ class EmployeeApi {
   static ListRequest = () => {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
-    console.log(user?.token);
-    return axios.get(`${base}/leavereqs/all`, {
+    // console.log(user?.token);
+    return axios.get(`${base}/leave_reqs/all`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,

@@ -50,6 +50,7 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { useAuth } from "../../../auth-context/auth.context";
 import AuthApi from "../../../api/auth";
+import axios from "api";
 function SignIn() {
   const [email, setEmail] = useState(""); // <-- Default values HERE
   const [password, setPassword] = useState(""); // <-- Default values HERE
@@ -78,7 +79,6 @@ function SignIn() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const login = async (event) => {
-    console.log(email, password);
     if (event) {
       event.preventDefault();
     }
@@ -94,29 +94,39 @@ function SignIn() {
     setButtonText("Signing in");
     try {
       let response = await AuthApi.Login({
-        email,
+        username: email,
         password,
       });
-      console.log(response);
       if (response.data && response.data.success === false) {
         setButtonText("Sign in");
         return setError(response.data.msg);
       }
       return setProfile(response);
     } catch (err) {
-      console.log(err);
       setButtonText("Sign in");
       if (err.message) {
-        return setError(err.message);
+        // return setError(err.message);
+        return setError("Username or password is incorrect.");
       }
       return setError("There has been an error.");
     }
   };
   const setProfile = async (response) => {
-    let user = { ...response.data.user };
-    user.token = response.data.token;
-    user.role = response.data.user.role || "Employee";
-    user.remain = response.data.user.remaindingLeaveDays;
+    let user = { ...response.data.user }
+    console.log("res data:", response.data);
+    user.token = response.data.accessToken;
+
+    const userData = await axios.get("api/users/info", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+
+    console.log("user data: ", userData.data);
+    
+    user.role = userData.data.user.role === "manager" ? "Admin" : "Employee";
+    user.remain = userData.data.user.remainingDays;
     user = JSON.stringify(user);
     setUser(user);
     localStorage.setItem("user", user);
@@ -193,7 +203,7 @@ function SignIn() {
                 color={textColor}
                 mb="8px"
               >
-                Email<Text color={brandStars}>*</Text>
+                Username<Text color={brandStars}>*</Text>
               </FormLabel>
               <Input
                 isRequired={true}

@@ -30,11 +30,15 @@ import Menu from "components/menu/MainMenu";
 // Assets
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 import { formatDate } from "utils/date";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 export default function ComplexTable(props) {
   const { columnsData, tableData } = props;
+  console.log('columnsData: ', columnsData)
+  console.log('tableData: ', tableData)
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
+  const history = useHistory();
 
   const tableInstance = useTable(
     {
@@ -53,9 +57,19 @@ export default function ComplexTable(props) {
     prepareRow,
     initialState,
   } = tableInstance;
-  initialState.pageSize = 5;
+  // initialState.pageSize = 5;
+  // initialState.pageSize = 10;
 
-  console.log(page)
+  const handleClickTableRow = (e, id) => {
+    e.preventDefault();
+    console.log('id: ', id)
+    history.push({
+      pathname: `/admin/view-request`,
+      search: `?id=${id}`,
+      state: { id: id}
+    })
+  }
+
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
   return (
@@ -100,13 +114,19 @@ export default function ComplexTable(props) {
           {page.map((row, index) => {
             prepareRow(row);
             return (
-              <Tr {...row.getRowProps()} key={index}>
+              <Tr
+                {...row.getRowProps()}
+                key={index}
+                onClick={e => handleClickTableRow(e, row.values.title[4])}
+                cursor='pointer'
+                _hover={{ bg: "gray.200" }}
+              >
                 {row.cells.map((cell, index) => {
                   let data = "";
                   if (cell.column.Header === "TITLE") {
                     data = (
-                      <VStack>
-                        <Text color={textColor} fontSize='sm' fontWeight='700'>
+                      <VStack >
+                        <Text textAlign="left" color={textColor} fontSize='sm' fontWeight='700'>
                           {cell.value[0]}
                         </Text>
                         <HStack>
@@ -158,7 +178,6 @@ export default function ComplexTable(props) {
                       </Flex>
                     );
                   } else if (cell.column.Header === "DATE") {
-                    console.log(cell.value)
                     data = (
                       <Text color={textColor} fontSize='sm' fontWeight='700'>
                         {formatDate(cell.value)}
@@ -167,13 +186,16 @@ export default function ComplexTable(props) {
                   } else if (cell.column.Header === "REMAIN DAYS") {
                     data = (
                       <Flex align='center'>
-                        <Progress
+                        {/* <Progress
                           variant='table'
                           colorScheme='brandScheme'
                           h='8px'
                           w='108px'
-                          value={cell.value / 30 * 100}
-                        />
+                          value={0}
+                        /> */}
+                        <Text color={textColor} fontSize='sm' fontWeight='700'>
+                          {cell.value}
+                        </Text>
                       </Flex>
                     );
                   }
@@ -221,7 +243,7 @@ ComplexTable.Skeleton = (props) => {
     prepareRow,
     initialState,
   } = tableInstance;
-  initialState.pageSize = 11;
+  // initialState.pageSize = 11;
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
@@ -245,7 +267,10 @@ ComplexTable.Skeleton = (props) => {
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>
           {headerGroups.map((headerGroup, index) => (
-            <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
+            <Tr
+              {...headerGroup.getHeaderGroupProps()}
+              key={index}
+            >
               {headerGroup.headers.map((column, index) => (
                 <Th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
@@ -276,7 +301,8 @@ ComplexTable.Skeleton = (props) => {
                       key={index}
                       fontSize={{ sm: "14px" }}
                       minW={{ sm: "150px", md: "200px", lg: "auto" }}
-                      borderColor='transparent'>
+                      borderColor='transparent'
+                    >
                       <SkeletonText mt='4' noOfLines={2} spacing='4' skeletonHeight='2' w={{ base: "100px", "3xl": "120px" }} />
                     </Td>
                   );

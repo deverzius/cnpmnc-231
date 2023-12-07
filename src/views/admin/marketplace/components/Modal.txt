@@ -36,6 +36,17 @@ const RequestModal = ({ refetch }) => {
     console.log(e);
   };
   console.log(title, reason)
+  
+  const createDateList = (startDate, endDate) => { 
+    const dateList = [];
+    let currentDate = startDate;
+    while (currentDate <= endDate) {
+      dateList.push(currentDate.toLocaleDateString().replaceAll('/', '-'));
+      currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
+    }
+    console.log(dateList)
+    return dateList;
+  }
   ///
   const {
     data: RequestListData,
@@ -45,10 +56,17 @@ const RequestModal = ({ refetch }) => {
     isLoading
   } = useQuery({
     queryKey: ["approve"],
-    queryFn: () => EmployeeApi.SubmitRequest({ title: title, reason: reason, start_date: selectedDate[0], end_date: selectedDate[1] }),
+    queryFn: () => EmployeeApi.SubmitRequest(
+      {
+        title: title,
+        reason: reason,
+        description: "",
+        leaveDays:  createDateList(selectedDate[0], selectedDate[1])
+      }
+    ),
     enabled: false,
   });
-  const handleClick = async () => {
+  const handleSubmit = async () => {
     // Enable the query when the button is clicked
     await ApproveRequest();
     refetch()
@@ -155,7 +173,7 @@ const RequestModal = ({ refetch }) => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="brand" mr={3} onClick={handleClick} isDisabled={isFetchingListData}>
+            <Button colorScheme="brand" mr={3} onClick={handleSubmit} isDisabled={isFetchingListData}>
               Submit
             </Button>
             <Button onClick={onClose}>Cancel</Button>

@@ -105,7 +105,6 @@ function SignIn() {
       }
       return history.push("/auth/sign-in");
     } catch (err) {
-      console.log(err);
       setButtonText("Sign up");
       if (err.response) {
         return setError(err.response.data.msg);

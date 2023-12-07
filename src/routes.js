@@ -9,6 +9,7 @@ import {
   MdLogout,
   MdOutlineShoppingCart,
   MdLogin,
+  MdDashboard,
   MdAdminPanelSettings,
 } from "react-icons/md";
 
@@ -23,6 +24,7 @@ import RTL from "views/admin/rtl";
 // import SignInCentered from "views/auth/signIn";
 import SignIn from "views/auth/signIn/index.jsx";
 import SignUp from "views/auth/signUp/index.jsx";
+import ViewRequest from "views/admin/viewReqs";
 
 const routes = [
   {
@@ -65,6 +67,22 @@ const routes = [
   //   icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
   //   component: Profile,
   // },
+  {
+    name: "View Request",
+    layout: "/admin",
+    path: "/view-request",
+    role: "all",
+    icon: (
+      <Icon
+        as={MdDashboard}
+        width='20px'
+        height='20px'
+        color='inherit'
+      />
+    ),
+    component: ViewRequest,
+    secondary: false,
+  },
   {
     name: "Signin",
     layout: "/auth",
